@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% extends "core/main.html" %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks</title>
+    
+
+</head>
+<body>
+{% block content %}
+<div class="day-date">
+    <h1>{{month|upper}}</h1>
+    <h1>{{date}}</h1>
+    <h1>{{day|upper}}</h1>
+</div>
+
+<div class="header-bar">
+    <h2>Hello, {{request.user | capfirst}}</h2>
+    {% if request.user.is_authenticated %}
+        <div class="logout">
+            <a href="{% url "logout" %}">Logout</a>
+        </div>
+    {% endif %}
+</div>
+        
+{% if page_obj %}
+    <div class="incomplete-task-count">
+        <p><i>You have {{count}} incomplete task{{ count | pluralize:"s"}}.</i></p>
+    </div>
+{% endif %}    
+
+<div class="search-task">
+    <form method="get" >
+        <input type="text" name="search-task" value={{searchingtask}} >     
+            <button type="submit" value="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+    </form>
+</div>
+  
+{% if page_obj %}
+    <div class="task-container">
+        {% for task in tasks_list %}
+            <div class="task-wrapper">
+                {% if task.completion %}
+                <div class="task-title">
+                    <div class="task-complete-icon"></div>
+                    <i><s><a href="{% url "updatetask" task.id %}">{{task.title}}</a></s></i>
+                </div>
+                {% else %}
+                <div class="task-title">
+                    <div class="task-incomplete-icon"></div>
+                    <i><a href="{% url "updatetask" task.id %}">{{task.title}}</a></i>
+                </div>
+                {% endif %}
+                <div class="delete-task">
+                    <form action="{% url "deletetask" task.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit"><i class="fa fa-trash"></i></button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-task-data">
+        <h3><i>No Tasks Available</i></h3>
+    </div>   
+{% endif %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            {% if page_obj %}
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+            {% endif %}
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+<div class="extend-add-task">
+    <div class="add-button">
+        <a href=" {% url "addtask" %}">&#43;</a> <br> <br>
+    </div>
+</div>
+ 
+{% endblock content %}
+</body>
+</html>

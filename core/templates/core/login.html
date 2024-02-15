@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% extends "core/main.html" %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+  {% block content %}
+    
+  <div class="login-tag">
+    <h2 style='display:flex;align-items: center;margin-left:38%'>Login</h2>
+  </div>
+  <div class="div">
+    {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                {{ message|safe }}
+              </div>
+            {% endfor %}
+          {% endif %}
+  </div>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input style='border-radius: 5px' class='login-signup-button' type="submit" value="Login">
+    </form>
+    <p>Dont have account ? &nbsp;<a href="{% url "signup" %}">Sign Up</a></p>
+    {% endblock content %}
+</body>
+</html>

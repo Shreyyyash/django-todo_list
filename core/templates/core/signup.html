@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% extends "core/main.html" %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp</title>
+</head>
+<body>
+    {% block content %}
+    <div class="sign-up-header">
+        <h2 style='display:flex;align-items: center;margin-left:38%'>SignUp</h2>
+    </div>
+    <form action="" method="post" novalidate>
+        {% csrf_token %}
+        {% for fm in form %}
+        {{fm.label_tag}}{{fm}} {{fm.errors | striptags}}<br><br>
+        {% endfor %}
+        <input class='login-signup-button' type="submit" value="SignUp">
+    </form>
+    <p>Already have account ? &nbsp; <a href="{% url 'login' %}">Login</a></p>
+    {% endblock content %}
+</body>
+</html>

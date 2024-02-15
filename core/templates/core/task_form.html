@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends "core/main.html" %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+{% block content %}
+<div class="go-back">
+    <a href="{% url "task" %}">&#8592 Back </a>
+</div>
+<div class="add-task">
+
+    <h3 style='text-align:center'>Add Your Task</h3>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class='add-update-button' type="submit">Add</button>
+    </form>
+    <br>
+</div>
+{% endblock content %}
+</body>
+</html>
